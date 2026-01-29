@@ -118,11 +118,10 @@ class RepositoryUrlCache
         }
 
         $url = $this->buildUrl($this->getRootUrl($repositoryId));
-        $urlQuery = $url->getQuery();
-        $urlQuery->modify([Constants::PARAM_OBJECT_ID => (string) $objectId]);
+        Utils::modifyUriQuery($url, [Constants::PARAM_OBJECT_ID => (string) $objectId]);
 
         if (!empty($selector)) {
-            $urlQuery->modify([Constants::PARAM_SELECTOR => (string) $selector]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_SELECTOR => (string) $selector]);
         }
 
         return $url;

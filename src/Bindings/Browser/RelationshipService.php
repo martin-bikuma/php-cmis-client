@@ -15,6 +15,7 @@ use Dkd\PhpCmis\Data\ExtensionDataInterface;
 use Dkd\PhpCmis\Data\ObjectListInterface;
 use Dkd\PhpCmis\Enum\RelationshipDirection;
 use Dkd\PhpCmis\RelationshipServiceInterface;
+use Dkd\PhpCmis\Utils;
 
 /**
  * Relationship Service Browser Binding client.
@@ -67,24 +68,22 @@ class RelationshipService extends AbstractBrowserBindingService implements Relat
             $relationshipDirection = RelationshipDirection::cast(RelationshipDirection::SOURCE);
         }
 
-        $query->modify(
-            [
-                Constants::PARAM_TYPE_ID => $typeId,
-                Constants::PARAM_RELATIONSHIP_DIRECTION => (string) $relationshipDirection,
-                Constants::PARAM_SUB_RELATIONSHIP_TYPES => $includeSubRelationshipTypes ? 'true' : 'false',
-                Constants::PARAM_ALLOWABLE_ACTIONS => $includeAllowableActions ? 'true' : 'false',
-                Constants::PARAM_SUCCINCT => $this->getSuccinct() ? 'true' : 'false',
-                Constants::PARAM_SKIP_COUNT => $skipCount,
-                Constants::PARAM_DATETIME_FORMAT => (string) $this->getDateTimeFormat()
-            ]
-        );
+        Utils::modifyUriQuery($url, [
+            Constants::PARAM_TYPE_ID => $typeId,
+            Constants::PARAM_RELATIONSHIP_DIRECTION => (string) $relationshipDirection,
+            Constants::PARAM_SUB_RELATIONSHIP_TYPES => $includeSubRelationshipTypes ? 'true' : 'false',
+            Constants::PARAM_ALLOWABLE_ACTIONS => $includeAllowableActions ? 'true' : 'false',
+            Constants::PARAM_SUCCINCT => $this->getSuccinct() ? 'true' : 'false',
+            Constants::PARAM_SKIP_COUNT => $skipCount,
+            Constants::PARAM_DATETIME_FORMAT => (string) $this->getDateTimeFormat()
+        ]);
 
         if ($filter !== null) {
-            $query->modify([Constants::PARAM_FILTER => $filter]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_FILTER => $filter]);
         }
 
         if ($maxItems !== null) {
-            $query->modify([Constants::PARAM_MAX_ITEMS =>  $maxItems]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_MAX_ITEMS => $maxItems]);
         }
 
         $responseData = (array) $this->readJson($url);
