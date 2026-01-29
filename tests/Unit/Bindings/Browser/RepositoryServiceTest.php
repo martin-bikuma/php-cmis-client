@@ -17,7 +17,7 @@ use Dkd\PhpCmis\DataObjects\ItemTypeDefinition;
 use Dkd\PhpCmis\DataObjects\RepositoryInfoBrowserBinding;
 use Dkd\PhpCmis\Definitions\TypeDefinitionInterface;
 use GuzzleHttp\Psr7\Response;
-use League\Url\Url;
+use League\Uri\Uri;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
@@ -154,7 +154,7 @@ class RepositoryServiceTest extends AbstractBrowserBindingServiceTestCase
 
         $repositoryService->expects($this->atLeastOnce())->method('getRepositoryUrl')->with(
             $repositoryId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $repositoryService->expects($this->atLeastOnce())->method('post')->with(
             $expectedUrl
         )->willReturn($responseMock);
@@ -176,7 +176,7 @@ class RepositoryServiceTest extends AbstractBrowserBindingServiceTestCase
 
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=createType&type[foo]=bar&type[baz]=bazz'
                 ),
@@ -212,7 +212,7 @@ class RepositoryServiceTest extends AbstractBrowserBindingServiceTestCase
 
         $repositoryService->expects($this->atLeastOnce())->method('getRepositoryUrl')->with(
             $repositoryId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $repositoryService->expects($this->atLeastOnce())->method('post')->with(
             $expectedUrl
         )->willReturn($responseMock);
@@ -232,7 +232,7 @@ class RepositoryServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=deleteType&typeId=typeId'
                 ),
@@ -289,7 +289,7 @@ class RepositoryServiceTest extends AbstractBrowserBindingServiceTestCase
 
         $repositoryService->expects($this->atLeastOnce())->method('getRepositoryUrl')->with(
             $repositoryId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $repositoryService->expects($this->atLeastOnce())->method('post')->with(
             $expectedUrl
         )->willReturn($responseMock);
@@ -312,7 +312,7 @@ class RepositoryServiceTest extends AbstractBrowserBindingServiceTestCase
 
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=updateType&type=' . $typeDefinitionJsonRepresentation
                 ),

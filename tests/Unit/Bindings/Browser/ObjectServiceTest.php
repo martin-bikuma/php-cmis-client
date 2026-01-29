@@ -32,7 +32,7 @@ use Dkd\PhpCmis\Enum\VersioningState;
 use Dkd\PhpCmis\SessionParameter;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Stream\StreamInterface;
-use League\Url\Url;
+use League\Uri\Uri;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
@@ -94,7 +94,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
             $repositoryId,
             $objectId,
             Constants::SELECTOR_OBJECT
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $objectService->expects($this->any())->method('read')->with($expectedUrl)->willReturn($responseMock);
 
         $this->assertSame(
@@ -116,7 +116,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?filter=filter,123&includeAllowableActions=true'
                     . '&includeRelationships=none&renditionFilter=foo:bar&includePolicyIds=true&includeACL=true'
                     . '&succinct=false&dateTimeFormat=simple'
@@ -131,7 +131,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 true,
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?includeAllowableActions=false'
                     . '&includeRelationships=both&renditionFilter=foo:bar&includePolicyIds=false&includeACL=false'
                     . '&succinct=false&dateTimeFormat=simple'
@@ -146,7 +146,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 false,
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?filter=filter,123&includeAllowableActions=false'
                     . '&renditionFilter=foo:bar&includePolicyIds=false&includeACL=false'
                     . '&succinct=false&dateTimeFormat=simple'
@@ -225,12 +225,12 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
         if ($folderId === null) {
             $objectService->expects($this->atLeastOnce())->method('getRepositoryUrl')->with(
                 $repositoryId
-            )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+            )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         } else {
             $objectService->expects($this->atLeastOnce())->method('getObjectUrl')->with(
                 $repositoryId,
                 $folderId
-            )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+            )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         }
 
         if ($expectedContentStream) {
@@ -296,7 +296,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
 
         return [
             'Create document without stream' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                 ),
                 [
@@ -314,7 +314,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 $properties
             ],
             'Create document with a stream where the uri contains a file extension' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                 ),
                 [
@@ -356,7 +356,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 $removeAcl
             ],
             'Create document with a stream where the uri does not have a file extension' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                 ),
                 [
@@ -456,7 +456,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
         $objectService->expects($this->atLeastOnce())->method('getObjectUrl')->with(
             $repositoryId,
             $folderId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $objectService->expects($this->atLeastOnce())->method('post')->with(
             $expectedUrl,
             $expectedPostData
@@ -504,7 +504,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
 
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                 ),
                 [
@@ -522,7 +522,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 'parentFolderId'
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                 ),
                 [
@@ -606,7 +606,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
         $objectService->expects($this->atLeastOnce())->method('getObjectUrl')->with(
             $repositoryId,
             $objectId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $objectService->expects($this->atLeastOnce())->method('post')->with(
               $expectedUrl,
               [
@@ -631,7 +631,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                 ),
                 'repositoryId',
@@ -639,7 +639,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 true
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                 ),
                 'repositoryId',
@@ -702,7 +702,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
         $objectService->expects($this->atLeastOnce())->method('getObjectUrl')->with(
             $repositoryId,
             $objectId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $objectService->expects($this->atLeastOnce())->method('post')->with(
             $expectedUrl
         )->willReturn($responseMock);
@@ -730,7 +730,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=move&targetFolderId=targetFolderId&sourceFolderId=sourceFolderId&succinct=false'
                 ),
@@ -786,7 +786,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
             $repositoryId,
             $objectId,
             Constants::SELECTOR_PROPERTIES
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $objectService->expects($this->any())->method('read')->with($expectedUrl)->willReturn($responseMock);
 
         $objectService->getProperties(
@@ -806,7 +806,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?filter=filter,123&succinct=false&dateTimeFormat=simple'
                 ),
@@ -815,7 +815,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 'filter,123'
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?succinct=false&dateTimeFormat=simple'
                 ),
@@ -884,7 +884,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
         $objectService->expects($this->atLeastOnce())->method('getObjectUrl')->with(
             $repositoryId,
             $folderId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $objectService->expects($this->atLeastOnce())->method('post')->with(
             $expectedUrl,
             $expectedPostData
@@ -930,7 +930,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
 
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                 ),
                 [
@@ -948,7 +948,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 'folderId'
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                 ),
                 [
@@ -1065,12 +1065,12 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
         if ($folderId === null) {
             $objectService->expects($this->atLeastOnce())->method('getRepositoryUrl')->with(
                 $repositoryId
-            )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+            )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         } else {
             $objectService->expects($this->atLeastOnce())->method('getObjectUrl')->with(
                 $repositoryId,
                 $folderId
-            )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+            )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         }
 
         $objectService->expects($this->atLeastOnce())->method('post')->with($expectedUrl)->willReturn($responseMock);
@@ -1120,7 +1120,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
 
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                 ),
                 [
@@ -1140,7 +1140,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 'folderId'
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                 ),
                 [
@@ -1236,7 +1236,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
             $repositoryId,
             $path,
             Constants::SELECTOR_OBJECT
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $objectService->expects($this->once())->method('read')->with($expectedUrl)->willReturn($responseMock);
 
         $objectService->getObjectByPath(
@@ -1260,7 +1260,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?filter=filter,123&includeAllowableActions=true'
                     . '&includeRelationships=none&renditionFilter=foo:bar&includePolicyIds=true&includeACL=true'
                     . '&succinct=false&dateTimeFormat=simple'
@@ -1275,7 +1275,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 true,
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?includeAllowableActions=false'
                     . '&includeRelationships=both&renditionFilter=foo:bar&includePolicyIds=false&includeACL=false'
                     . '&succinct=false&dateTimeFormat=simple'
@@ -1290,7 +1290,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 false,
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?filter=filter,345&includeAllowableActions=false'
                     . '&renditionFilter=foo:bar&includePolicyIds=false&includeACL=false'
                     . '&succinct=false&dateTimeFormat=simple'
@@ -1373,7 +1373,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
         $objectService->expects($this->atLeastOnce())->method('getObjectUrl')->with(
             $repositoryId,
             $objectId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
 
         $objectService->expects($this->atLeastOnce())->method('post')->with($expectedUrl)->willReturn($responseMock);
         $objectService->expects($this->atLeastOnce())->method('getSession')->willReturn($sessionMock);
@@ -1416,7 +1416,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
 
         return [
             'Parameter set with defined changeToken and empty session parameters' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?propertyId[0]=cmis:name&propertyValue[0]=name'
                     . '&propertyId[1]=cmis:description&propertyValue[1]=description'
@@ -1432,7 +1432,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 []
             ],
             'Parameter set with empty changeToken and defined session parameter' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?propertyId[0]=cmis:name&propertyValue[0]=foo'
                     . '&propertyId[1]=cmis:description&propertyValue[1]=bar'
@@ -1448,7 +1448,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 ]
             ],
             'Parameter set with defined changeToken and defined OMIT_CHANGE_TOKENS session parameter' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?propertyId[0]=cmis:name&propertyValue[0]=foo'
                     . '&propertyId[1]=cmis:description&propertyValue[1]=bar'
@@ -1531,7 +1531,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
         $objectService->expects($this->atLeastOnce())->method('getObjectUrl')->with(
             $repositoryId,
             $objectId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
 
         $objectService->expects($this->atLeastOnce())->method('post')->with(
             $expectedUrl,
@@ -1563,7 +1563,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
         $contentStream = $this->getMockForAbstractClass(StreamInterface::class);
         return [
             'Parameter set with defined changeToken and empty session parameters' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=setContent&overwriteFlag=true'
                     . '&changeToken=changeToken&succinct=false'
@@ -1576,7 +1576,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 []
             ],
             'Parameter set with empty changeToken and defined session parameter' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=setContent&overwriteFlag=true&succinct=true'
                 ),
@@ -1590,7 +1590,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 ]
             ],
             'Parameter set with defined changeToken and defined OMIT_CHANGE_TOKENS session parameter' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=setContent&overwriteFlag=false&succinct=false'
                 ),
@@ -1669,7 +1669,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
         $objectService->expects($this->atLeastOnce())->method('getObjectUrl')->with(
             $repositoryId,
             $objectId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
 
         $objectService->expects($this->atLeastOnce())->method('post')->with($expectedUrl)->willReturn($responseMock);
         $objectService->expects($this->atLeastOnce())->method('getSession')->willReturn($sessionMock);
@@ -1695,7 +1695,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             'Parameter set with defined changeToken and empty session parameters' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=deleteContent&changeToken=changeToken&succinct=false'
                 ),
@@ -1705,7 +1705,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 []
             ],
             'Parameter set with empty changeToken and defined session parameter' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=deleteContent&succinct=true'
                 ),
@@ -1717,7 +1717,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 ]
             ],
             'Parameter set with defined changeToken and defined OMIT_CHANGE_TOKENS session parameter' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=deleteContent&succinct=false'
                 ),
@@ -1775,7 +1775,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
             $repositoryId,
             $objectId,
             Constants::SELECTOR_CONTENT
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $objectService->expects($this->any())->method('read')->with($expectedUrl)->willReturn($responseMock);
 
         $responseContentStream = $objectService->getContentStream(
@@ -1802,14 +1802,14 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             'Parameter set without optional parameters' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                 ),
                 'repositoryId',
                 'objectId',
             ],
             'Parameter set with streamId' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?streamId=streamId'
                 ),
@@ -1818,7 +1818,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 'streamId'
             ],
             'Parameter set with offset and length' => [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?streamId=streamId'
                 ),
@@ -1878,7 +1878,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
         $objectService->expects($this->atLeastOnce())->method('getObjectUrl')->with(
             $repositoryId,
             $folderId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
 
         $objectService->expects($this->atLeastOnce())->method('post')->with($expectedUrl)->willReturn($responseMock);
         $objectService->expects($this->atLeastOnce())->method('getJsonConverter')->willReturn($jsonConverterMock);
@@ -1901,7 +1901,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=deleteTree&folderId=folderIdValue&allVersions=true'
                     . '&continueOnFailure=false'
@@ -1910,7 +1910,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 'folderIdValue'
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=deleteTree&folderId=folderIdValue&allVersions=false'
                     . '&continueOnFailure=false'
@@ -1920,7 +1920,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 false
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=deleteTree&folderId=folderIdValue&allVersions=true'
                     . '&continueOnFailure=true'
@@ -1932,7 +1932,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 true
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST
                     . '?cmisaction=deleteTree&folderId=folderIdValue&allVersions=true'
                     . '&continueOnFailure=true&unfileObjects=delete'
@@ -1993,7 +1993,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
             $repositoryId,
             $objectId,
             Constants::SELECTOR_RENDITIONS
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $objectService->expects($this->once())->method('read')->with($expectedUrl)->willReturn($responseMock);
 
         $objectService->getRenditions(
@@ -2014,7 +2014,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?renditionFilter=cmis:thumbnail&skipCount=0'
                 ),
                 'repositoryId',
@@ -2022,7 +2022,7 @@ class ObjectServiceTest extends AbstractBrowserBindingServiceTestCase
                 'cmis:thumbnail'
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?renditionFilter=cmis:thumbnail&maxItems=99&skipCount=10'
                 ),
                 'repositoryId',

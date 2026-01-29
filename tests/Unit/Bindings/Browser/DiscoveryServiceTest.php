@@ -16,7 +16,7 @@ use Dkd\PhpCmis\DataObjects\ObjectData;
 use Dkd\PhpCmis\DataObjects\ObjectList;
 use Dkd\PhpCmis\Enum\IncludeRelationships;
 use GuzzleHttp\Psr7\Response;
-use League\Url\Url;
+use League\Uri\Uri;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
@@ -69,7 +69,7 @@ class DiscoveryServiceTest extends AbstractBrowserBindingServiceTestCase
 
         $discoveryService->expects($this->once())->method('getRepositoryUrl')->with(
             $repositoryId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $discoveryService->expects($this->once())->method('post')->with($expectedUrl)->willReturn($responseMock);
 
         $this->assertSame(
@@ -137,7 +137,7 @@ class DiscoveryServiceTest extends AbstractBrowserBindingServiceTestCase
 
         $discoveryService->expects($this->once())->method('getRepositoryUrl')->with(
             $repositoryId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $discoveryService->expects($this->any())->method('post')->with($expectedUrl)->willReturn($responseMock);
 
         $discoveryService->query(
@@ -205,7 +205,7 @@ class DiscoveryServiceTest extends AbstractBrowserBindingServiceTestCase
 
         $discoveryService->expects($this->once())->method('getRepositoryUrl')->with(
             $repositoryId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $discoveryService->expects($this->once())->method('post')->with($expectedUrl)->willReturn($responseMock);
 
         $expectedObjectList = new ObjectList();
@@ -237,7 +237,7 @@ class DiscoveryServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?cmisaction=query&statement=SELECT%20*%20FROM%20cmis:document'
                     . '&searchAllVersions=true&includeRelationships=none&renditionFilter=foo:bar'
                     . '&includeAllowableActions=true&maxItems=99&skipCount=0&dateTimeFormat=simple'
@@ -252,7 +252,7 @@ class DiscoveryServiceTest extends AbstractBrowserBindingServiceTestCase
                 0
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?cmisaction=query&statement=SELECT%20*%20FROM%20cmis:document'
                     . '&searchAllVersions=false&includeRelationships=both&renditionFilter=foo:bar'
                     . '&includeAllowableActions=false&skipCount=99&dateTimeFormat=simple'
@@ -267,7 +267,7 @@ class DiscoveryServiceTest extends AbstractBrowserBindingServiceTestCase
                 99
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?cmisaction=query&statement=SELECT%20*%20FROM%20cmis:document'
                     . '&searchAllVersions=false&renditionFilter=foo:bar'
                     . '&includeAllowableActions=false&skipCount=99&dateTimeFormat=simple'
@@ -330,7 +330,7 @@ class DiscoveryServiceTest extends AbstractBrowserBindingServiceTestCase
 
         $discoveryService->expects($this->any())->method('getRepositoryUrl')->with(
             $repositoryId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $discoveryService->expects($this->once())->method('read')->with($expectedUrl)->willReturn($responseMock);
 
         $discoveryService->getContentChanges(
@@ -394,7 +394,7 @@ class DiscoveryServiceTest extends AbstractBrowserBindingServiceTestCase
 
         $discoveryService->expects($this->once())->method('getRepositoryUrl')->with(
             $repositoryId
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $discoveryService->expects($this->once())->method('read')->with($expectedUrl)->willReturn($responseMock);
 
         $expectedObjectList = new ObjectList();
@@ -424,7 +424,7 @@ class DiscoveryServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?changeLogToken=changeLogToken&includeProperties=false'
                     . '&includePolicyIds=false&includeACL=false&maxItems=99&succinct=false'
                 ),
@@ -436,7 +436,7 @@ class DiscoveryServiceTest extends AbstractBrowserBindingServiceTestCase
                 99
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?includeProperties=true'
                     . '&includePolicyIds=true&includeACL=true&succinct=false'
                 ),

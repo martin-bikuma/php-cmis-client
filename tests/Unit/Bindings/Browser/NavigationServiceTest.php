@@ -15,7 +15,7 @@ use Dkd\PhpCmis\Constants;
 use Dkd\PhpCmis\Data\ExtensionDataInterface;
 use Dkd\PhpCmis\DataObjects\ObjectData;
 use Dkd\PhpCmis\Enum\IncludeRelationships;
-use League\Url\Url;
+use League\Uri\Uri;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
@@ -81,7 +81,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?filter=filter,123&orderBy=cmis:objectId&includeAllowableActions=true'
                     . '&includeRelationships=none&renditionFilter=cmis:none&includePathSegment=true&maxItems=99'
                     . '&skipCount=0&succinct=false&dateTimeFormat=simple'
@@ -98,7 +98,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
                 0
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?orderBy=cmis:objectId&includeAllowableActions=false'
                     . '&renditionFilter=cmis:none&includePathSegment=false'
                     . '&skipCount=20&succinct=false&dateTimeFormat=simple'
@@ -115,7 +115,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
                 20
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?filter=filter,123&includeAllowableActions=false'
                     . '&includeRelationships=both&renditionFilter=cmis:none&includePathSegment=false'
                     . '&skipCount=20&succinct=false&dateTimeFormat=simple'
@@ -187,7 +187,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?filter=filter,123&orderBy=cmis:objectId&includeAllowableActions=true'
                     . '&includeRelationships=none&renditionFilter=cmis:none&maxItems=99'
                     . '&skipCount=0&succinct=false&dateTimeFormat=simple'
@@ -203,7 +203,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
                 0
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?includeAllowableActions=true&renditionFilter=cmis:none'
                     . '&skipCount=0&succinct=false&dateTimeFormat=simple'
                 ),
@@ -270,7 +270,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?depth=5&filter=filter,123&includeAllowableActions=true'
                     . '&includeRelationships=none&renditionFilter=cmis:none&includePathSegment=true'
                     .'&succinct=false&dateTimeFormat=simple'
@@ -285,7 +285,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
                 true
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?depth=5&filter=filter,123&includeAllowableActions=true'
                     . '&includeRelationships=none&renditionFilter=cmis:none&includePathSegment=true'
                     .'&succinct=false&dateTimeFormat=simple'
@@ -300,7 +300,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
                 true
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?depth=5&includeAllowableActions=true'
                     . '&includeRelationships=none&renditionFilter=cmis:none&includePathSegment=true'
                     .'&succinct=false&dateTimeFormat=simple'
@@ -352,7 +352,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?filter=filter,123&succinct=false&dateTimeFormat=simple'
                 ),
                 'repositoryId',
@@ -360,7 +360,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
                 'filter,123'
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?succinct=false&dateTimeFormat=simple'
                 ),
                 'repositoryId',
@@ -419,7 +419,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?depth=5&filter=filter,123&includeAllowableActions=true'
                     . '&includeRelationships=none&renditionFilter=cmis:none&includePathSegment=true'
                     . '&succinct=false&dateTimeFormat=simple'
@@ -434,7 +434,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
                 true
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?depth=5&includeAllowableActions=true'
                     . '&renditionFilter=cmis:none&includePathSegment=false'
                     . '&succinct=false&dateTimeFormat=simple'
@@ -498,7 +498,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
     {
         return [
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?filter=filter,123&includeAllowableActions=true'
                     . '&includeRelationships=none&renditionFilter=cmis:none&includeRelativePathSegment=true'
                     . '&succinct=false&dateTimeFormat=simple'
@@ -512,7 +512,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
                 true
             ],
             [
-                Url::createFromUrl(
+                Uri::new(
                     self::BROWSER_URL_TEST . '?includeAllowableActions=true'
                     . '&renditionFilter=cmis:none&includeRelativePathSegment=false'
                     . '&succinct=false&dateTimeFormat=simple'
@@ -571,7 +571,7 @@ class NavigationServiceTest extends AbstractBrowserBindingServiceTestCase
             $repositoryId,
             $objectId,
             $selector
-        )->willReturn(Url::createFromUrl(self::BROWSER_URL_TEST));
+        )->willReturn(Uri::new(self::BROWSER_URL_TEST));
         $navigationService->expects($this->once())->method('read')->with($expectedUrl)->willReturn($responseMock);
 
         return $navigationService;

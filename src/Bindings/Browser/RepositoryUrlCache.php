@@ -152,7 +152,7 @@ class RepositoryUrlCache
     }
 
     /**
-     * Build an instance of \League\Url\Url for the given url
+     * Build an instance of \League\Uri\Uri for the given url
      *
      * @param string $url
      * @return Uri

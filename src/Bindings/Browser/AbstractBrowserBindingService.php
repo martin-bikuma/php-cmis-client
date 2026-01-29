@@ -35,7 +35,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Stream\StreamInterface;
-use League\Url\Url;
+use League\Uri\Uri;
 use Psr\Http\Message\ResponseInterface;
 use function basename;
 use function is_array;
@@ -97,7 +97,7 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
      * @param string|null $selector
      * @throws CmisConnectionException
      * @throws CmisObjectNotFoundException
-     * @return Url
+     * @return Uri
      */
     protected function getObjectUrl($repositoryId, $objectId, $selector = null)
     {
@@ -239,10 +239,10 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
     /**
      * Wrapper to read URL response as JSON as is the general use case.
      *
-     * @param Url $url
+     * @param Uri $url
      * @return mixed
      */
-    protected function readJson(Url $url)
+    protected function readJson(Uri $url)
     {
         return json_decode($this->read($url)->getBody(), true);
     }
@@ -250,12 +250,12 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
     /**
      * Do a get request for the given url
      *
-     * @param Url $url
+     * @param Uri $url
      * @return Response
      * @throws CmisBaseException an more specific exception of this type could be thrown. For more details see
      * @see AbstractBrowserBindingService::convertStatusCode()
      */
-    protected function read(Url $url)
+    protected function read(Uri $url)
     {
         /** @var Response $response */
         try {
@@ -371,7 +371,7 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
      * @param string|null $selector
      * @throws CmisConnectionException
      * @throws CmisObjectNotFoundException
-     * @return Url
+     * @return Uri
      */
     protected function getPathUrl($repositoryId, $path, $selector = null)
     {
@@ -411,12 +411,12 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
     /**
      * Wrapper for calling post() and reading response as JSON, as is the general use case.
      *
-     * @param Url $url
+     * @param Uri $url
      * @param array $content
      * @param array $headers
      * @return mixed
      */
-    protected function postJson(Url $url, $content = [], array $headers = [])
+    protected function postJson(Uri $url, $content = [], array $headers = [])
     {
         return \json_decode($this->post($url, $content, $headers)->getBody(), true);
     }
@@ -425,14 +425,14 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
      * Performs a POST on an URL, checks the response code and returns the
      * result.
      *
-     * @param Url $url Request url
+     * @param Uri $url Request url
      * @param resource|string|StreamInterface|array $content Entity body data or an array for POST fields and files
      * @param array $headers Additional header options
      * @return ResponseInterface
      * @throws CmisBaseException an more specific exception of this type could be thrown. For more details see
      * @see AbstractBrowserBindingService::convertStatusCode()
      */
-    protected function post(Url $url, $content = [], array $headers = [])
+    protected function post(Uri $url, $content = [], array $headers = [])
     {
         if (is_resource($content) || is_object($content)) {
             $headers['body'] = $content;
@@ -518,7 +518,7 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
      * @param string|null $selector
      * @throws CmisConnectionException
      * @throws CmisObjectNotFoundException
-     * @return Url
+     * @return Uri
      */
     protected function getRepositoryUrl($repositoryId, $selector = null)
     {
@@ -683,10 +683,10 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
     /**
      * Appends policies parameters to url
      *
-     * @param Url $url
+     * @param Uri $url
      * @param string[] $policies A list of policy IDs that must be applied to the newly created document object
      */
-    protected function appendPoliciesToUrl(Url $url, array $policies)
+    protected function appendPoliciesToUrl(Uri $url, array $policies)
     {
         if (!empty($policies)) {
             $url->getQuery()->modify($this->convertPolicyIdArrayToQueryArray($policies));
@@ -696,10 +696,10 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
     /**
      * Appends addAces parameters to url
      *
-     * @param Url $url
+     * @param Uri $url
      * @param AclInterface|null $addAces A list of ACEs
      */
-    protected function appendAddAcesToUrl(Url $url, AclInterface $addAces = null)
+    protected function appendAddAcesToUrl(Uri $url, AclInterface $addAces = null)
     {
         if ($addAces !== null) {
             $url->getQuery()->modify(
@@ -715,10 +715,10 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
     /**
      * Appends removeAces parameters to url
      *
-     * @param Url $url
+     * @param Uri $url
      * @param AclInterface|null $removeAces A list of ACEs
      */
-    protected function appendRemoveAcesToUrl(Url $url, AclInterface $removeAces = null)
+    protected function appendRemoveAcesToUrl(Uri $url, AclInterface $removeAces = null)
     {
         if ($removeAces !== null) {
             $url->getQuery()->modify(
