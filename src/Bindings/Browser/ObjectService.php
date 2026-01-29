@@ -26,6 +26,7 @@ use Dkd\PhpCmis\Exception\CmisInvalidArgumentException;
 use Dkd\PhpCmis\ObjectServiceInterface;
 use Dkd\PhpCmis\PropertyIds;
 use Dkd\PhpCmis\SessionParameter;
+use Dkd\PhpCmis\Utils;
 use Guzzle\Http\Message\Response;
 use GuzzleHttp\Stream\LimitStream;
 use GuzzleHttp\Stream\StreamInterface;
@@ -436,7 +437,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
 
         $url = $this->getObjectUrl($repositoryId, $objectId);
 
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::CONTROL_CMISACTION => Constants::CMISACTION_DELETE_CONTENT,
                 Constants::PARAM_SUCCINCT => $this->getSuccinct() ? 'true' : 'false'
@@ -444,7 +445,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         );
 
         if ($changeToken !== null && !$this->getSession()->get(SessionParameter::OMIT_CHANGE_TOKENS, false)) {
-            $url->getQuery()->modify([Constants::PARAM_CHANGE_TOKEN => $changeToken]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_CHANGE_TOKEN => $changeToken]);
         }
 
         $newObject = $this->getJsonConverter()->convertObject((array) $this->postJson($url));
@@ -511,7 +512,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         ExtensionDataInterface $extension = null
     ) {
         $url = $this->getObjectUrl($repositoryId, $folderId);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::CONTROL_CMISACTION => Constants::CMISACTION_DELETE_TREE,
                 Constants::PARAM_FOLDER_ID => $folderId,
@@ -521,7 +522,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         );
 
         if ($unfileObjects !== null) {
-            $url->getQuery()->modify([Constants::PARAM_UNFILE_OBJECTS => (string) $unfileObjects]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_UNFILE_OBJECTS => (string) $unfileObjects]);
         }
 
         return $this->getJsonConverter()->convertFailedToDelete($this->postJson($url));
@@ -570,7 +571,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         $url = $this->getObjectUrl($repositoryId, $objectId, Constants::SELECTOR_CONTENT);
 
         if ($streamId !== null) {
-            $url->getQuery()->modify([Constants::PARAM_STREAM_ID => $streamId]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_STREAM_ID => $streamId]);
         }
 
         /** @var Response $response */
@@ -638,7 +639,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
             return $this->getCached($cacheKey);
         }
         $url = $this->getObjectUrl($repositoryId, $objectId, Constants::SELECTOR_OBJECT);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::PARAM_ALLOWABLE_ACTIONS => $includeAllowableActions ? 'true' : 'false',
                 Constants::PARAM_RENDITION_FILTER => $renditionFilter,
@@ -650,11 +651,11 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         );
 
         if (!empty($filter)) {
-            $url->getQuery()->modify([Constants::PARAM_FILTER => (string) $filter]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_FILTER => (string) $filter]);
         }
 
         if ($includeRelationships !== null) {
-            $url->getQuery()->modify([Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
         }
 
         $responseData = (array) $this->readJson($url);
@@ -716,7 +717,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         }
 
         $url = $this->getPathUrl($repositoryId, $path, Constants::SELECTOR_OBJECT);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::PARAM_ALLOWABLE_ACTIONS => $includeAllowableActions ? 'true' : 'false',
                 Constants::PARAM_RENDITION_FILTER => $renditionFilter,
@@ -728,11 +729,11 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         );
 
         if (!empty($filter)) {
-            $url->getQuery()->modify([Constants::PARAM_FILTER => (string) $filter]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_FILTER => (string) $filter]);
         }
 
         if ($includeRelationships !== null) {
-            $url->getQuery()->modify([Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
         }
 
         $responseData = (array) $this->readJson($url);
@@ -774,7 +775,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         }
 
         $url = $this->getObjectUrl($repositoryId, $objectId, Constants::SELECTOR_PROPERTIES);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::PARAM_SUCCINCT => $this->getSuccinct() ? 'true' : 'false',
                 Constants::PARAM_DATETIME_FORMAT => (string) $this->getDateTimeFormat()
@@ -782,7 +783,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         );
 
         if (!empty($filter)) {
-            $url->getQuery()->modify([Constants::PARAM_FILTER => (string) $filter]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_FILTER => (string) $filter]);
         }
 
         $responseData = (array) $this->readJson($url);
@@ -832,7 +833,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         }
 
         $url = $this->getObjectUrl($repositoryId, $objectId, Constants::SELECTOR_RENDITIONS);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::PARAM_RENDITION_FILTER => $renditionFilter,
                 Constants::PARAM_SKIP_COUNT => (string) $skipCount,
@@ -840,7 +841,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         );
 
         if ($maxItems !== null) {
-            $url->getQuery()->modify([Constants::PARAM_MAX_ITEMS => (string) $maxItems]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_MAX_ITEMS => (string) $maxItems]);
         }
 
         $responseData = (array) $this->readJson($url);
@@ -869,7 +870,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         $this->flushCached();
 
         $url = $this->getObjectUrl($repositoryId, $objectId);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::CONTROL_CMISACTION => Constants::CMISACTION_MOVE,
                 Constants::PARAM_TARGET_FOLDER_ID => $targetFolderId,
@@ -917,7 +918,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
 
         $url = $this->getObjectUrl($repositoryId, $objectId);
 
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::CONTROL_CMISACTION => Constants::CMISACTION_SET_CONTENT,
                 Constants::PARAM_OVERWRITE_FLAG => $overwriteFlag ? 'true' : 'false',
@@ -926,7 +927,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         );
 
         if ($changeToken !== null && !$this->getSession()->get(SessionParameter::OMIT_CHANGE_TOKENS, false)) {
-            $url->getQuery()->modify([Constants::PARAM_CHANGE_TOKEN => $changeToken]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_CHANGE_TOKEN => $changeToken]);
         }
 
         $newObject = $this->getJsonConverter()->convertObject(
@@ -973,7 +974,7 @@ class ObjectService extends AbstractBrowserBindingService implements ObjectServi
         $url = $this->getObjectUrl($repositoryId, $objectId);
 
         if ($changeToken !== null && !$this->getSession()->get(SessionParameter::OMIT_CHANGE_TOKENS, false)) {
-            $url->getQuery()->modify([Constants::PARAM_CHANGE_TOKEN => $changeToken]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_CHANGE_TOKEN => $changeToken]);
         }
 
         $queryArray = $this->convertPropertiesToQueryArray($properties);

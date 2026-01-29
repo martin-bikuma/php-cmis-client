@@ -31,6 +31,7 @@ use Dkd\PhpCmis\Exception\CmisProxyAuthenticationException;
 use Dkd\PhpCmis\Exception\CmisRuntimeException;
 use Dkd\PhpCmis\Exception\CmisUnauthorizedException;
 use Dkd\PhpCmis\SessionParameter;
+use Dkd\PhpCmis\Utils;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
@@ -504,7 +505,7 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
 
         // build URL
         $url = $this->getRepositoryUrl($repositoryId, Constants::SELECTOR_TYPE_DEFINITION);
-        $url->getQuery()->modify([Constants::PARAM_TYPE_ID => $typeId]);
+        Utils::modifyUriQuery($url, [Constants::PARAM_TYPE_ID => $typeId]);
 
         return $this->getJsonConverter()->convertTypeDefinition(
             (array) $this->readJson($url)
@@ -689,7 +690,7 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
     protected function appendPoliciesToUrl(Uri $url, array $policies)
     {
         if (!empty($policies)) {
-            $url->getQuery()->modify($this->convertPolicyIdArrayToQueryArray($policies));
+            Utils::modifyUriQuery($url, $this->convertPolicyIdArrayToQueryArray($policies));
         }
     }
 
@@ -702,7 +703,7 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
     protected function appendAddAcesToUrl(Uri $url, AclInterface $addAces = null)
     {
         if ($addAces !== null) {
-            $url->getQuery()->modify(
+            Utils::modifyUriQuery($url,
                 $this->convertAclToQueryArray(
                     $addAces,
                     Constants::CONTROL_ADD_ACE_PRINCIPAL,
@@ -721,7 +722,8 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
     protected function appendRemoveAcesToUrl(Uri $url, AclInterface $removeAces = null)
     {
         if ($removeAces !== null) {
-            $url->getQuery()->modify(
+            Utils::modifyUriQuery(
+                $url,
                 $this->convertAclToQueryArray(
                     $removeAces,
                     Constants::CONTROL_REMOVE_ACE_PRINCIPAL,
@@ -758,7 +760,7 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
     {
         $result = $this->getRepositoryUrlCache()->getObjectUrl($repositoryId, $documentId, Constants::SELECTOR_CONTENT);
         if ($result !== null) {
-            $result->getQuery()->modify([Constants::PARAM_STREAM_ID => $streamId]);
+            Utils::modifyUriQuery($result, [Constants::PARAM_STREAM_ID => $streamId]);
             $result = (string) $result;
         }
         return $result;

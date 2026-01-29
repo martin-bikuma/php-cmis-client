@@ -19,6 +19,7 @@ use Dkd\PhpCmis\Data\ObjectListInterface;
 use Dkd\PhpCmis\Data\ObjectParentDataInterface;
 use Dkd\PhpCmis\Enum\IncludeRelationships;
 use Dkd\PhpCmis\NavigationServiceInterface;
+use Dkd\PhpCmis\Utils;
 
 /**
  * Navigation Service Browser Binding client.
@@ -61,7 +62,7 @@ class NavigationService extends AbstractBrowserBindingService implements Navigat
         ExtensionDataInterface $extension = null
     ) {
         $url = $this->getObjectUrl($repositoryId, $folderId, Constants::SELECTOR_CHECKEDOUT);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::PARAM_ALLOWABLE_ACTIONS => $includeAllowableActions ? 'true' : 'false',
                 Constants::PARAM_RENDITION_FILTER => $renditionFilter,
@@ -72,19 +73,19 @@ class NavigationService extends AbstractBrowserBindingService implements Navigat
         );
 
         if (!empty($filter)) {
-            $url->getQuery()->modify([Constants::PARAM_FILTER => (string) $filter]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_FILTER => (string) $filter]);
         }
 
         if (!empty($orderBy)) {
-            $url->getQuery()->modify([Constants::PARAM_ORDER_BY => $orderBy]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_ORDER_BY => $orderBy]);
         }
 
         if ($maxItems > 0) {
-            $url->getQuery()->modify([Constants::PARAM_MAX_ITEMS => (string) $maxItems]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_MAX_ITEMS => (string) $maxItems]);
         }
 
         if ($includeRelationships !== null) {
-            $url->getQuery()->modify([Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
         }
 
         $responseData = (array) $this->readJson($url);
@@ -132,7 +133,7 @@ class NavigationService extends AbstractBrowserBindingService implements Navigat
         ExtensionDataInterface $extension = null
     ) {
         $url = $this->getObjectUrl($repositoryId, $folderId, Constants::SELECTOR_CHILDREN);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::PARAM_ALLOWABLE_ACTIONS => $includeAllowableActions ? 'true' : 'false',
                 Constants::PARAM_RENDITION_FILTER => $renditionFilter,
@@ -144,19 +145,19 @@ class NavigationService extends AbstractBrowserBindingService implements Navigat
         );
 
         if (!empty($filter)) {
-            $url->getQuery()->modify([Constants::PARAM_FILTER => (string) $filter]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_FILTER => (string) $filter]);
         }
 
         if (!empty($orderBy)) {
-            $url->getQuery()->modify([Constants::PARAM_ORDER_BY => $orderBy]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_ORDER_BY => $orderBy]);
         }
 
         if ($maxItems > 0) {
-            $url->getQuery()->modify([Constants::PARAM_MAX_ITEMS => (string) $maxItems]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_MAX_ITEMS => (string) $maxItems]);
         }
 
         if ($includeRelationships !== null) {
-            $url->getQuery()->modify([Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
         }
 
         $responseData = (array) $this->readJson($url);
@@ -196,7 +197,7 @@ class NavigationService extends AbstractBrowserBindingService implements Navigat
         ExtensionDataInterface $extension = null
     ) {
         $url = $this->getObjectUrl($repositoryId, $folderId, Constants::SELECTOR_DESCENDANTS);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::PARAM_DEPTH => (string) $depth,
                 Constants::PARAM_ALLOWABLE_ACTIONS => $includeAllowableActions ? 'true' : 'false',
@@ -208,11 +209,11 @@ class NavigationService extends AbstractBrowserBindingService implements Navigat
         );
 
         if (!empty($filter)) {
-            $url->getQuery()->modify([Constants::PARAM_FILTER => (string) $filter]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_FILTER => (string) $filter]);
         }
 
         if ($includeRelationships !== null) {
-            $url->getQuery()->modify([Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
         }
 
         $responseData = (array) $this->readJson($url);
@@ -238,7 +239,7 @@ class NavigationService extends AbstractBrowserBindingService implements Navigat
         ExtensionDataInterface $extension = null
     ) {
         $url = $this->getObjectUrl($repositoryId, $folderId, Constants::SELECTOR_PARENT);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::PARAM_SUCCINCT => $this->getSuccinct() ? 'true' : 'false',
                 Constants::PARAM_DATETIME_FORMAT => (string) $this->getDateTimeFormat()
@@ -246,7 +247,7 @@ class NavigationService extends AbstractBrowserBindingService implements Navigat
         );
 
         if (!empty($filter)) {
-            $url->getQuery()->modify([Constants::PARAM_FILTER => (string) $filter]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_FILTER => (string) $filter]);
         }
 
         $responseData = (array) $this->readJson($url);
@@ -286,7 +287,7 @@ class NavigationService extends AbstractBrowserBindingService implements Navigat
         ExtensionDataInterface $extension = null
     ) {
         $url = $this->getObjectUrl($repositoryId, $folderId, Constants::SELECTOR_FOLDER_TREE);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::PARAM_DEPTH => (string) $depth,
                 Constants::PARAM_ALLOWABLE_ACTIONS => $includeAllowableActions ? 'true' : 'false',
@@ -298,11 +299,11 @@ class NavigationService extends AbstractBrowserBindingService implements Navigat
         );
 
         if (!empty($filter)) {
-            $url->getQuery()->modify([Constants::PARAM_FILTER => (string) $filter]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_FILTER => (string) $filter]);
         }
 
         if ($includeRelationships !== null) {
-            $url->getQuery()->modify([Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
         }
 
         $responseData = (array) $this->readJson($url);
@@ -340,7 +341,7 @@ class NavigationService extends AbstractBrowserBindingService implements Navigat
         ExtensionDataInterface $extension = null
     ) {
         $url = $this->getObjectUrl($repositoryId, $objectId, Constants::SELECTOR_PARENTS);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::PARAM_ALLOWABLE_ACTIONS => $includeAllowableActions ? 'true' : 'false',
                 Constants::PARAM_RENDITION_FILTER => $renditionFilter,
@@ -351,11 +352,11 @@ class NavigationService extends AbstractBrowserBindingService implements Navigat
         );
 
         if (!empty($filter)) {
-            $url->getQuery()->modify([Constants::PARAM_FILTER => (string) $filter]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_FILTER => (string) $filter]);
         }
 
         if ($includeRelationships !== null) {
-            $url->getQuery()->modify([Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
         }
 
         $responseData = (array) $this->readJson($url);

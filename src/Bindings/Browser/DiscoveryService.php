@@ -15,6 +15,7 @@ use Dkd\PhpCmis\Data\ExtensionDataInterface;
 use Dkd\PhpCmis\Data\ObjectListInterface;
 use Dkd\PhpCmis\DiscoveryServiceInterface;
 use Dkd\PhpCmis\Enum\IncludeRelationships;
+use Dkd\PhpCmis\Utils;
 
 /**
  * Discovery Service Browser Binding client.
@@ -56,7 +57,7 @@ class DiscoveryService extends AbstractBrowserBindingService implements Discover
     ) {
         $url = $this->getRepositoryUrl($repositoryId, Constants::SELECTOR_CONTENT_CHANGES);
 
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::PARAM_PROPERTIES => $includeProperties ? 'true' : 'false',
                 Constants::PARAM_POLICY_IDS => $includePolicyIds ? 'true' : 'false',
@@ -66,11 +67,11 @@ class DiscoveryService extends AbstractBrowserBindingService implements Discover
         );
 
         if ($changeLogToken !== null) {
-            $url->getQuery()->modify([Constants::PARAM_CHANGE_LOG_TOKEN => (string) $changeLogToken]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_CHANGE_LOG_TOKEN => (string) $changeLogToken]);
         }
 
         if ($maxItems > 0) {
-            $url->getQuery()->modify([Constants::PARAM_MAX_ITEMS => (string) $maxItems]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_MAX_ITEMS => (string) $maxItems]);
         }
 
         $responseData = (array) $this->readJson($url);
@@ -120,7 +121,7 @@ class DiscoveryService extends AbstractBrowserBindingService implements Discover
     ) {
         $url = $this->getRepositoryUrl($repositoryId);
 
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::CONTROL_CMISACTION => Constants::CMISACTION_QUERY,
                 Constants::PARAM_STATEMENT => (string) $statement,
@@ -133,11 +134,11 @@ class DiscoveryService extends AbstractBrowserBindingService implements Discover
         );
 
         if ($includeRelationships !== null) {
-            $url->getQuery()->modify([Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_RELATIONSHIPS => (string) $includeRelationships]);
         }
 
         if ($maxItems > 0) {
-            $url->getQuery()->modify([Constants::PARAM_MAX_ITEMS => (string) $maxItems]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_MAX_ITEMS => (string) $maxItems]);
         }
 
         return $this->getJsonConverter()->convertQueryResultList((array) $this->postJson($url));

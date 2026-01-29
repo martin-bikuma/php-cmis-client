@@ -18,6 +18,7 @@ use Dkd\PhpCmis\Definitions\TypeDefinitionInterface;
 use Dkd\PhpCmis\Definitions\TypeDefinitionListInterface;
 use Dkd\PhpCmis\Exception\CmisObjectNotFoundException;
 use Dkd\PhpCmis\RepositoryServiceInterface;
+use Dkd\PhpCmis\Utils;
 
 /**
  * Repository Service Browser Binding client.
@@ -36,7 +37,7 @@ class RepositoryService extends AbstractBrowserBindingService implements Reposit
     {
         $url = $this->getRepositoryUrl($repositoryId);
 
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::CONTROL_CMISACTION => Constants::CMISACTION_CREATE_TYPE,
                 Constants::CONTROL_TYPE => $this->getJsonConverter()->convertFromTypeDefinition($type)
@@ -57,7 +58,7 @@ class RepositoryService extends AbstractBrowserBindingService implements Reposit
     {
         $url = $this->getRepositoryUrl($repositoryId);
 
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::CONTROL_CMISACTION => Constants::CMISACTION_DELETE_TYPE,
                 Constants::CONTROL_TYPE_ID => $typeId
@@ -123,7 +124,7 @@ class RepositoryService extends AbstractBrowserBindingService implements Reposit
         ExtensionDataInterface $extension = null
     ) {
         $url = $this->getRepositoryUrl($repositoryId, Constants::SELECTOR_TYPE_CHILDREN);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::PARAM_PROPERTY_DEFINITIONS => $includePropertyDefinitions ? 'true' : 'false',
                 Constants::PARAM_SKIP_COUNT => $skipCount,
@@ -132,11 +133,11 @@ class RepositoryService extends AbstractBrowserBindingService implements Reposit
         );
 
         if ($typeId !== null) {
-            $url->getQuery()->modify([Constants::PARAM_TYPE_ID => $typeId]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_TYPE_ID => $typeId]);
         }
 
         if ($maxItems !== null) {
-            $url->getQuery()->modify([Constants::PARAM_MAX_ITEMS => $maxItems]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_MAX_ITEMS => $maxItems]);
         }
 
         $responseData = (array) $this->readJson($url);
@@ -200,7 +201,7 @@ class RepositoryService extends AbstractBrowserBindingService implements Reposit
         ExtensionDataInterface $extension = null
     ) {
         $url = $this->getRepositoryUrl($repositoryId, Constants::SELECTOR_TYPE_DESCENDANTS);
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::PARAM_PROPERTY_DEFINITIONS => $includePropertyDefinitions ? 'true' : 'false',
                 Constants::PARAM_DATETIME_FORMAT => (string) $this->getDateTimeFormat()
@@ -208,11 +209,11 @@ class RepositoryService extends AbstractBrowserBindingService implements Reposit
         );
 
         if ($typeId !== null) {
-            $url->getQuery()->modify([Constants::PARAM_TYPE_ID => $typeId]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_TYPE_ID => $typeId]);
         }
 
         if ($depth !== null) {
-            $url->getQuery()->modify([Constants::PARAM_DEPTH => $depth]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_DEPTH => $depth]);
         }
 
         $responseData = (array) $this->readJson($url);
@@ -232,7 +233,7 @@ class RepositoryService extends AbstractBrowserBindingService implements Reposit
     {
         $url = $this->getRepositoryUrl($repositoryId);
 
-        $url->getQuery()->modify(
+        Utils::modifyUriQuery($url,
             [
                 Constants::CONTROL_CMISACTION => Constants::CMISACTION_UPDATE_TYPE,
                 Constants::CONTROL_TYPE => json_encode($this->getJsonConverter()->convertFromTypeDefinition($type))

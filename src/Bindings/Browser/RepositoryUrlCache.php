@@ -12,6 +12,7 @@ namespace Dkd\PhpCmis\Bindings\Browser;
 
 use Dkd\PhpCmis\Constants;
 use Dkd\PhpCmis\Exception\CmisInvalidArgumentException;
+use Dkd\PhpCmis\Utils;
 use League\Uri\Uri;
 
 /**
@@ -85,7 +86,7 @@ class RepositoryUrlCache
         $repositoryUrl = $this->buildUrl($baseUrl);
 
         if ($selector !== null && $selector !== '') {
-            $repositoryUrl->getQuery()->modify([Constants::PARAM_SELECTOR => $selector]);
+            Utils::modifyUriQuery($repositoryUrl, [Constants::PARAM_SELECTOR => $selector]);
         }
 
         return $repositoryUrl;
@@ -145,7 +146,7 @@ class RepositoryUrlCache
         $url->getPath()->append($path);
 
         if (!empty($selector)) {
-            $url->getQuery()->modify([Constants::PARAM_SELECTOR => $selector]);
+            Utils::modifyUriQuery($url, [Constants::PARAM_SELECTOR => $selector]);
         }
 
         return $url;
