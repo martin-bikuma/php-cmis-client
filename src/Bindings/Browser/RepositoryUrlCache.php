@@ -12,7 +12,7 @@ namespace Dkd\PhpCmis\Bindings\Browser;
 
 use Dkd\PhpCmis\Constants;
 use Dkd\PhpCmis\Exception\CmisInvalidArgumentException;
-use League\Url\Url;
+use League\Uri\Uri;
 
 /**
  * URL cache for repository and root URLs.
@@ -74,7 +74,7 @@ class RepositoryUrlCache
      *
      * @param string $repositoryId
      * @param string|null $selector add optional cmis selector parameter
-     * @return Url|null
+     * @return Uri|null
      */
     public function getRepositoryUrl($repositoryId, $selector = null)
     {
@@ -108,7 +108,7 @@ class RepositoryUrlCache
      * @param string $repositoryId
      * @param string $objectId
      * @param string|null $selector
-     * @return Url|null
+     * @return Uri|null
      */
     public function getObjectUrl($repositoryId, $objectId, $selector = null)
     {
@@ -133,7 +133,7 @@ class RepositoryUrlCache
      * @param string $repositoryId
      * @param string $path
      * @param string|null $selector
-     * @return Url
+     * @return Uri
      */
     public function getPathUrl($repositoryId, $path, $selector = null)
     {
@@ -155,10 +155,10 @@ class RepositoryUrlCache
      * Build an instance of \League\Url\Url for the given url
      *
      * @param string $url
-     * @return Url
+     * @return Uri
      */
     public function buildUrl($url)
     {
-        return Url::createFromUrl($url);
+        return Uri::new($url);
     }
 }

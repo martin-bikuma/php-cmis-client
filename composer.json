@@ -20,7 +20,7 @@
         "guzzlehttp/guzzle": "^7",
         "guzzlehttp/streams": "^3",
         "doctrine/cache": "^1",
-        "league/url": "^2|^3"
+        "league/uri": "^7.8"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "~2.2",
