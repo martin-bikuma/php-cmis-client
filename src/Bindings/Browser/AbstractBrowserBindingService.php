@@ -330,25 +330,25 @@ abstract class AbstractBrowserBindingService implements LinkAccessInterface
             case 307:
                 return new CmisConnectionException(
                     'Redirects are not supported (HTTP status code ' . $code . '): ' . $message,
-                    null,
+                    $code,
                     $exception
                 );
             case 400:
-                return new CmisInvalidArgumentException($message, null, $exception);
+                return new CmisInvalidArgumentException($message, $code, $exception);
             case 401:
-                return new CmisUnauthorizedException($message, null, $exception);
+                return new CmisUnauthorizedException($message, $code, $exception);
             case 403:
-                return new CmisPermissionDeniedException($message, null, $exception);
+                return new CmisPermissionDeniedException($message, $code, $exception);
             case 404:
-                return new CmisObjectNotFoundException($message, null, $exception);
+                return new CmisObjectNotFoundException($message, $code, $exception);
             case 405:
-                return new CmisNotSupportedException($message, null, $exception);
+                return new CmisNotSupportedException($message, $code, $exception);
             case 407:
-                return new CmisProxyAuthenticationException($message, null, $exception);
+                return new CmisProxyAuthenticationException($message, $code, $exception);
             case 409:
-                return new CmisConstraintException($message, null, $exception);
+                return new CmisConstraintException($message, $code, $exception);
             default:
-                return new CmisRuntimeException($message, null, $exception);
+                return new CmisRuntimeException($message, $code, $exception);
         }
     }
 
